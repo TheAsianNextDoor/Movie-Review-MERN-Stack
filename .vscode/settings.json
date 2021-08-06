@@ -1,0 +1,18 @@
+{
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "files.eol": "\n",
+    "workbench.tree.indent": 25,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "cSpell.words": [
+        "destructure",
+        "tmijs",
+        "urijs",
+        "yocto"
+    ]
+}
