@@ -76,12 +76,15 @@ export const SearchPage = () => {
             </StyledSearchDiv>
 
             <StyledCardDiv>
-                {!errors?.movieTitle && movies?.map((movieInfo, index) => (
-                    <MovieCard
-                        key={index}
-                        data={movieInfo}
-                    />
-                ))}
+                {
+                    !errors?.movieTitle
+                    && movies?.map((movieInfo, index) => (
+                        <MovieCard
+                            key={index}
+                            data={movieInfo}
+                        />
+                    ))
+                }
             </StyledCardDiv>
 
         </form>
