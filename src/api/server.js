@@ -5,6 +5,7 @@ import Mongoose from 'mongoose';
 
 import { apiKeyRouter } from './routes/apiKey.routes.js';
 import { commentRouter } from './routes/comment.routes.js';
+import { movieRouter } from './routes/movie.routes.js';
 import { ratingRouter } from './routes/rating.routes.js';
 
 dotEnv.config();
@@ -44,5 +45,6 @@ app.use([
 app.use('/comment', commentRouter);
 app.use('/rating', ratingRouter);
 app.use('/apiKey', apiKeyRouter);
+app.use('/movie', movieRouter);
 
 app.listen(port, () => console.log(`Connected on port ${port}`));
