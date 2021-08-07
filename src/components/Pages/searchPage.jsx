@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { searchByMovieNameURI } from '../../utils/uriUtils.js';
+import { searchByMovieNameUri } from '../../utils/uriUtils.js';
 import { MovieCard } from '../Controls/movieCard.jsx';
 import {
     StyledCardDiv,
@@ -29,22 +29,18 @@ export const SearchPage = () => {
         setError,
     } = useForm();
 
-    const loadData = async () => {
-        const { data: document } = await axios.get('/apiKey/ny_times');
-        const { key: apiKeyInstance } = document[0];
-        setApiKey(apiKeyInstance);
-    };
-
     useEffect(
         () => {
-            loadData();
+            (async () => {
+                const { key } = (await axios.get('/apiKey/ny_times')).data[0];
+                setApiKey(key);
+            })();
         },
         [],
     );
 
     const onSubmit = async ({ movieTitle }) => {
-        const uri = searchByMovieNameURI(movieTitle).addSearch({ 'api-key': apiKey }).toString();
-        const result = await axios.get(uri);
+        const result = await axios.get(searchByMovieNameUri(movieTitle, apiKey));
         if (result.data.results === null) {
             setError(
                 'movieTitle',
