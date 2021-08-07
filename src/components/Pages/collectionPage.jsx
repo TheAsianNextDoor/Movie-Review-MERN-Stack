@@ -1,7 +1,59 @@
-import { Table } from '../Controls/table.jsx';
+import { Button } from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
+import DeleteIcon from '@material-ui/icons/Delete.js';
+import axios from 'axios';
+import {
+    useEffect,
+    useState,
+} from 'react';
+
+import {
+    columnsConfig,
+    constructRows,
+} from '../../utils/tableUtils.js';
 
 export const CollectionPage = () => {
-    console.log('Collection Page');
+    const [
+        selectedItems,
+        setSelectedItems,
+    ] = useState([]);
+    const [
+        rows,
+        setRows,
+    ] = useState([]);
+
+    useEffect(
+        () => {
+            (async () => {
+                setRows([]);
+                const { data } = await axios.get('/movie/read/all');
+                setRows(constructRows(data));
+            })();
+        },
+        [],
+    );
+
+    const handleSelectionModelChange = (items) => {
+        setSelectedItems(items);
+    };
+
+    const handleDelete = async () => {
+        await axios.delete(`/movie/delete/${selectedItems[0]}`);
+        const { data } = await axios.get('/movie/read/all');
+        setRows(constructRows(data));
+    };
+    const handleCellCommit = async ({
+        id,
+        value,
+    }) => {
+        await axios.put(
+            '/movie/updateComment',
+            {
+                title: id,
+                comment: value,
+            },
+        );
+    };
 
     return (
         <div
@@ -12,7 +64,31 @@ export const CollectionPage = () => {
                 width: '90%',
             }}
         >
-            <Table />
+            <div
+                style={{
+                    height: '100%',
+                    width: '100%',
+                }}
+            >
+                <DataGrid
+                    rows={rows}
+                    columns={columnsConfig}
+                    pageSize={10}
+                    disableSelectionOnClick
+                    checkboxSelection
+                    onCellEditCommit={handleCellCommit}
+                    onSelectionModelChange={handleSelectionModelChange}
+                />
+            </div>
+            <Button
+                variant="contained"
+                startIcon={<DeleteIcon />}
+                color="primary"
+                onClick={handleDelete}
+            >
+                Delete
+
+            </Button>
         </div>
     );
 };

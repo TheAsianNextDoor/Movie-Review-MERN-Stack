@@ -4,6 +4,7 @@ import {
     CardHeader,
     Typography,
 } from '@material-ui/core';
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 import { StyledCard } from './movieCard.styles.js';
@@ -14,10 +15,10 @@ export const MovieCard = ({ data }) => {
         display_title,
         opening_date,
         summary_short,
-        // eslint-disable-next-line react/destructuring-assignment
     } = data;
 
-    const navigation = () => {
+    const navigation = async () => {
+        await axios.post(`/movie/create/${display_title}`);
         history.push('/collections');
     };
 
