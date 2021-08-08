@@ -2,7 +2,7 @@ import express from 'express';
 
 import {
     createMovie,
-    deleteMovie,
+    deleteMovies,
     readAllMovies,
     updateComment,
     updateRating,
@@ -14,4 +14,4 @@ movieRouter.post('/create/:title', createMovie);
 movieRouter.get('/read/all', readAllMovies);
 movieRouter.put('/updateRating', updateRating);
 movieRouter.put('/updateComment', updateComment);
-movieRouter.delete('/delete/:title', deleteMovie);
+movieRouter.delete('/delete', deleteMovies);

@@ -4,23 +4,18 @@ import {
     CardHeader,
     Typography,
 } from '@material-ui/core';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 import { StyledCard } from './movieCard.styles.js';
 
-export const MovieCard = ({ data }) => {
-    const history = useHistory();
+export const MovieCard = ({
+    data,
+    handleCardClick,
+}) => {
     const {
         display_title,
         opening_date,
         summary_short,
     } = data;
-
-    const navigation = async () => {
-        await axios.post(`/movie/create/${display_title}`);
-        history.push('/collections');
-    };
 
     if (!display_title) {
         return (
@@ -33,8 +28,7 @@ export const MovieCard = ({ data }) => {
         <>
             <StyledCard
                 variant="outlined"
-                onClick={navigation}
-
+                onClick={(event) => handleCardClick(event, display_title)}
             >
                 <CardHeader
                     title={data && display_title}

@@ -38,7 +38,11 @@ export const CollectionPage = () => {
     };
 
     const handleDelete = async () => {
-        await axios.delete(`/movie/delete/${selectedItems[0]}`);
+        await axios({
+            url: '/movie/delete',
+            method: 'delete',
+            data: { selectedItems },
+        });
         const { data } = await axios.get('/movie/read/all');
         setRows(constructRows(data));
     };
@@ -74,6 +78,11 @@ export const CollectionPage = () => {
                     rows={rows}
                     columns={columnsConfig}
                     pageSize={10}
+                    rowsPerPageOptions={[
+                        10,
+                        25,
+                        50,
+                    ]}
                     disableSelectionOnClick
                     checkboxSelection
                     onCellEditCommit={handleCellCommit}

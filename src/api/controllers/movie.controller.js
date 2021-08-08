@@ -52,11 +52,13 @@ export const updateComment = async (req, res) => {
     }
 };
 
-export const deleteMovie = async (req, res) => {
-    const { title } = req.params;
+export const deleteMovies = async (req, res) => {
+    const { selectedItems } = req.body;
+    const objectArray = selectedItems.map((title) => ({ title }));
+    const deleteQuery = { $or: objectArray };
 
     try {
-        const deleteResult = await MovieModel.deleteOne({ title });
+        const deleteResult = await MovieModel.deleteMany(deleteQuery);
         return res.json(deleteResult);
     } catch (e) {
         return res.status(400).json(e);

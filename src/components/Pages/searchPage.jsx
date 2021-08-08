@@ -5,6 +5,7 @@ import {
     useState,
 } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 import { searchByMovieNameUri } from '../../utils/uriUtils.js';
 import { MovieCard } from '../Controls/movieCard.jsx';
@@ -13,7 +14,8 @@ import {
     StyledSearchDiv,
 } from './searchPage.styles.jsx';
 
-export const SearchPage = () => {
+export const SearchPage = ({ setCurrentTab }) => {
+    const history = useHistory();
     const [
         movies,
         setMovies,
@@ -39,6 +41,12 @@ export const SearchPage = () => {
         [],
     );
 
+    const handleCardClick = async (event, displayTitle) => {
+        await axios.post(`/movie/create/${displayTitle}`);
+        setCurrentTab(1);
+        history.push('/collection');
+    };
+
     const onSubmit = async ({ movieTitle }) => {
         const result = await axios.get(searchByMovieNameUri(movieTitle, apiKey));
         if (result.data.results === null) {
@@ -57,6 +65,7 @@ export const SearchPage = () => {
                 <h2>
                     Search For Movies
                 </h2>
+                <p>Click Card to add to collection</p>
             </StyledSearchDiv>
             <StyledSearchDiv>
                 <TextField
@@ -78,6 +87,7 @@ export const SearchPage = () => {
                         <MovieCard
                             key={index}
                             data={movieInfo}
+                            handleCardClick={handleCardClick}
                         />
                     ))
                 }

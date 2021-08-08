@@ -30,6 +30,7 @@ module.exports = {
         indent: [
             'error',
             4,
+            { SwitchCase: 1 },
         ],
         'react/jsx-indent-props': [
             'error',
@@ -114,6 +115,7 @@ module.exports = {
         ],
 
         // misc rules
+        'no-plusplus': 'off',
         'no-debugger': 'warn',
         'no-await-in-loop': 'off',
         'no-process-env': 'off',
