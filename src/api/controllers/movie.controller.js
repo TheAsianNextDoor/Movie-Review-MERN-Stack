@@ -1,66 +1,50 @@
+import { errorWrapper } from '../apiUtils.js';
 import { MovieModel } from '../models/movie.model.js';
 
-export const createMovie = async (req, res) => {
+export const createMovie = errorWrapper(async (req, res) => {
     const { title } = req.params;
+    const findResult = await MovieModel.findOne({ title });
 
-    try {
-        const findResult = await MovieModel.findOne({ title });
-
-        if (findResult !== null) {
-            return res.send('Movie already added');
-        }
-
-        const postResult = new MovieModel({
-            title,
-            comment: '',
-            rating: 0,
-        }).save();
-        return res.json(postResult);
-    } catch (e) {
-        return res.status(400).json(e);
+    if (findResult !== null) {
+        return res.send('Movie already added');
     }
-};
 
-export const readAllMovies = async (req, res) => {
+    const postResult = new MovieModel({
+        title,
+        comment: '',
+        rating: 0,
+    }).save();
+    return res.json(postResult);
+});
+
+export const readAllMovies = errorWrapper(async (req, res) => {
     const findResult = await MovieModel.find();
     return res.json(findResult);
-};
+});
 
-export const updateRating = async (req, res) => {
+export const updateRating = errorWrapper(async (req, res) => {
     const {
         title,
         rating,
     } = req.body;
-    try {
-        const updateResult = await MovieModel.updateOne({ title }, { rating });
-        return res.json(updateResult);
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-};
+    const updateResult = await MovieModel.updateOne({ title }, { rating });
+    return res.json(updateResult);
+});
 
-export const updateComment = async (req, res) => {
+export const updateComment = errorWrapper(async (req, res) => {
     const {
         title,
         comment,
     } = req.body;
-    try {
-        const updateResult = await MovieModel.updateOne({ title }, { comment });
-        return res.json(updateResult);
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-};
+    const updateResult = await MovieModel.updateOne({ title }, { comment });
+    return res.json(updateResult);
+});
 
-export const deleteMovies = async (req, res) => {
+export const deleteMovies = errorWrapper(async (req, res) => {
     const { selectedItems } = req.body;
     const objectArray = selectedItems.map((title) => ({ title }));
     const deleteQuery = { $or: objectArray };
 
-    try {
-        const deleteResult = await MovieModel.deleteMany(deleteQuery);
-        return res.json(deleteResult);
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-};
+    const deleteResult = await MovieModel.deleteMany(deleteQuery);
+    return res.json(deleteResult);
+});
