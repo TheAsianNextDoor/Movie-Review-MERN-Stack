@@ -23,11 +23,9 @@ export const columnsConfig = [
         field: 'rating',
         headerName: 'Rating',
         description: 'Your rating of the movie',
-        sortable: true,
+        sortable: false,
         type: 'number',
         width: 150,
-        // sortComparator: (v1, v2, param1, param2) => param1.api.getCellValue(param1.id, 'rating')
-        //     - param2.api.getCellValue(param2.id, 'rating'),
         renderCell: (params) => (<WrappedRating {...params} />),
     },
 ];

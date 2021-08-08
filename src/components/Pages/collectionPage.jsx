@@ -11,6 +11,7 @@ import {
     columnsConfig,
     constructRows,
 } from '../../utils/tableUtils.js';
+import { Toast } from '../Controls/toast.jsx';
 
 export const CollectionPage = () => {
     const [
@@ -21,6 +22,14 @@ export const CollectionPage = () => {
         rows,
         setRows,
     ] = useState([]);
+    const [
+        successToastOpen,
+        setSuccessToastOpen,
+    ] = useState(false);
+    const [
+        failureToastOpen,
+        setFailureToastOpen,
+    ] = useState(false);
 
     useEffect(
         () => {
@@ -33,18 +42,28 @@ export const CollectionPage = () => {
         [],
     );
 
-    const handleSelectionModelChange = (items) => {
-        setSelectedItems(items);
-    };
+    const handleSelectionModelChange = (items) => setSelectedItems(items);
 
     const handleDelete = async () => {
-        await axios({
-            url: '/movie/delete',
-            method: 'delete',
-            data: { selectedItems },
-        });
-        const { data } = await axios.get('/movie/read/all');
-        setRows(constructRows(data));
+        // commented to show error toast
+        // would uncomment to prevent error case
+
+        // if (selectedItems.length === 0) {
+        //     return;
+        // }
+
+        try {
+            await axios({
+                url: '/movie/delete',
+                method: 'delete',
+                data: { selectedItems },
+            });
+            const { data } = await axios.get('/movie/read/all');
+            setRows(constructRows(data));
+            setSuccessToastOpen(true);
+        } catch (e) {
+            setFailureToastOpen(true);
+        }
     };
     const handleCellCommit = async ({
         id,
@@ -70,19 +89,15 @@ export const CollectionPage = () => {
         >
             <div
                 style={{
-                    height: '100%',
+                    height: '370px',
                     width: '100%',
                 }}
             >
                 <DataGrid
                     rows={rows}
                     columns={columnsConfig}
-                    pageSize={10}
-                    rowsPerPageOptions={[
-                        10,
-                        25,
-                        50,
-                    ]}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
                     disableSelectionOnClick
                     checkboxSelection
                     onCellEditCommit={handleCellCommit}
@@ -98,6 +113,18 @@ export const CollectionPage = () => {
                 Delete
 
             </Button>
+            <Toast
+                message="Movies deleted successfully"
+                severity="success"
+                open={successToastOpen}
+                setOpen={setSuccessToastOpen}
+            />
+            <Toast
+                message="Movies not deleted"
+                severity="error"
+                open={failureToastOpen}
+                setOpen={setFailureToastOpen}
+            />
         </div>
     );
 };
