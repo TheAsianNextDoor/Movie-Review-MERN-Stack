@@ -1,11 +1,10 @@
 import {
-    useEffect,
+    useLayoutEffect,
     useState,
 } from 'react';
 import {
     Route,
     Switch,
-    useLocation,
 } from 'react-router-dom';
 
 import { NavTabs } from './components/Controls/navTabs.jsx';
@@ -13,27 +12,14 @@ import { CollectionPage } from './components/Pages/collectionPage.jsx';
 import { SearchPage } from './components/Pages/searchPage.jsx';
 
 export const App = () => {
-    const { pathname } = useLocation();
     const [
         currentTab,
         setCurrentTab,
-    ] = useState(0);
-    console.log(pathname);
+    ] = useState(Number(localStorage.getItem('tab')) || 0);
 
-    useEffect(
-        () => {
-            switch (pathname) {
-                case '/':
-                    setCurrentTab(0);
-                    break;
-                case '/collection':
-                    setCurrentTab(1);
-                    break;
-                default:
-                    break;
-            }
-        },
-        [pathname],
+    useLayoutEffect(
+        () => localStorage.setItem('tab', currentTab),
+        [currentTab],
     );
 
     return (
