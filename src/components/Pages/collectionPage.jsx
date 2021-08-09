@@ -45,9 +45,8 @@ export const CollectionPage = () => {
     const handleSelectionModelChange = (items) => setSelectedItems(items);
 
     const handleDelete = async () => {
-        // commented to show error toast
+        // only commented to show error toast
         // would uncomment to prevent error case
-
         // if (selectedItems.length === 0) {
         //     return;
         // }
