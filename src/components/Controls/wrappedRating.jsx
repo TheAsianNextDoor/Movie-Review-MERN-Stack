@@ -1,6 +1,7 @@
 import { Rating } from '@material-ui/lab';
-import axios from 'axios';
 import { useState } from 'react';
+
+import { putRequestAndVerifyOk } from '../../utils/apiRequestUtils.js';
 
 export const WrappedRating = ({
     value: initialValue,
@@ -13,7 +14,7 @@ export const WrappedRating = ({
 
     const handleOnChange = async (event, newValue) => {
         setRatingValue(newValue);
-        await axios.put(
+        await putRequestAndVerifyOk(
             '/movie/updateRating',
             {
                 title: id,

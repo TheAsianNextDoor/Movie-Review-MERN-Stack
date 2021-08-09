@@ -1,12 +1,16 @@
 import { Button } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import DeleteIcon from '@material-ui/icons/Delete.js';
-import axios from 'axios';
 import {
     useEffect,
     useState,
 } from 'react';
 
+import {
+    deleteRequestAndVerifyOk,
+    getRequestAndReturnData,
+    putRequestAndVerifyOk,
+} from '../../utils/apiRequestUtils.js';
 import {
     columnsConfig,
     constructRows,
@@ -35,7 +39,7 @@ export const CollectionPage = () => {
         () => {
             (async () => {
                 setRows([]);
-                const { data } = await axios.get('/movie/read/all');
+                const data = await getRequestAndReturnData('/movie/read/all');
                 setRows(constructRows(data));
             })();
         },
@@ -52,23 +56,23 @@ export const CollectionPage = () => {
         // }
 
         try {
-            await axios({
-                url: '/movie/delete',
-                method: 'delete',
-                data: { selectedItems },
-            });
-            const { data } = await axios.get('/movie/read/all');
+            await deleteRequestAndVerifyOk(
+                '/movie/delete',
+                { data: { selectedItems } },
+            );
+            const data = await getRequestAndReturnData('/movie/read/all');
             setRows(constructRows(data));
             setSuccessToastOpen(true);
         } catch (e) {
             setFailureToastOpen(true);
         }
     };
+
     const handleCellCommit = async ({
         id,
         value,
     }) => {
-        await axios.put(
+        await putRequestAndVerifyOk(
             '/movie/updateComment',
             {
                 title: id,

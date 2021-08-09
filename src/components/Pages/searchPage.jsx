@@ -1,5 +1,4 @@
 import { TextField } from '@material-ui/core';
-import axios from 'axios';
 import {
     useEffect,
     useState,
@@ -7,6 +6,10 @@ import {
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+import {
+    getRequestAndReturnData,
+    postRequestAndVerifyOk,
+} from '../../utils/apiRequestUtils.js';
 import { searchByMovieNameUri } from '../../utils/uriUtils.js';
 import { MovieCard } from '../Controls/movieCard.jsx';
 import {
@@ -34,7 +37,7 @@ export const SearchPage = ({ setCurrentTab }) => {
     useEffect(
         () => {
             (async () => {
-                const { key } = (await axios.get('/apiKey/ny_times')).data[0];
+                const { key } = (await getRequestAndReturnData('/apiKey/ny_times'))[0];
                 setApiKey(key);
             })();
         },
@@ -42,20 +45,20 @@ export const SearchPage = ({ setCurrentTab }) => {
     );
 
     const handleCardClick = async (event, displayTitle) => {
-        await axios.post(`/movie/create/${displayTitle}`);
+        await postRequestAndVerifyOk(`/movie/create/${displayTitle}`);
         setCurrentTab(1);
         history.push('/collection');
     };
 
     const onSubmit = async ({ movieTitle }) => {
-        const result = await axios.get(searchByMovieNameUri(movieTitle, apiKey));
-        if (result.data.results === null) {
+        const { results } = await getRequestAndReturnData(searchByMovieNameUri(movieTitle, apiKey));
+        if (results === null) {
             setError(
                 'movieTitle',
                 { message: 'No movie found with provided name' },
             );
         } else {
-            setMovies(result.data.results.slice(0, 8));
+            setMovies(results.slice(0, 8));
         }
     };
 
