@@ -58,7 +58,7 @@ export const SearchPage = ({ setCurrentTab }) => {
                 { message: 'No movie found with provided name' },
             );
         } else {
-            setMovies(results.slice(0, 8));
+            setMovies(results.slice(0, 15));
         }
     };
 
