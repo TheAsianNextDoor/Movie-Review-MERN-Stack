@@ -15,9 +15,13 @@ import {
     columnsConfig,
     constructRows,
 } from '../../utils/tableUtils.js';
-import { Toast } from '../Controls/toast.jsx';
 
-export const CollectionPage = () => {
+export const CollectionPage = ({
+    setSuccessToastOpen,
+    setFailureToastOpen,
+    setSuccessToastMessage,
+    setFailureToastMessage,
+}) => {
     const [
         selectedItems,
         setSelectedItems,
@@ -26,14 +30,6 @@ export const CollectionPage = () => {
         rows,
         setRows,
     ] = useState([]);
-    const [
-        successToastOpen,
-        setSuccessToastOpen,
-    ] = useState(false);
-    const [
-        failureToastOpen,
-        setFailureToastOpen,
-    ] = useState(false);
 
     useEffect(
         () => {
@@ -63,8 +59,10 @@ export const CollectionPage = () => {
             const data = await getRequestAndReturnData('/movie/read/all');
             setRows(constructRows(data));
             setSuccessToastOpen(true);
+            setSuccessToastMessage('Movie(s) deleted successfully');
         } catch (e) {
             setFailureToastOpen(true);
+            setFailureToastMessage('Movie(s) delete failure');
         }
     };
 
@@ -72,13 +70,20 @@ export const CollectionPage = () => {
         id,
         value,
     }) => {
-        await putRequestAndVerifyOk(
-            '/movie/updateComment',
-            {
-                title: id,
-                comment: value,
-            },
-        );
+        try {
+            await putRequestAndVerifyOk(
+                '/movie/updateComment',
+                {
+                    title: id,
+                    comment: value,
+                },
+            );
+            setSuccessToastOpen(true);
+            setSuccessToastMessage('Comment added successfully');
+        } catch (e) {
+            setFailureToastOpen(true);
+            setFailureToastMessage('Comment failure');
+        }
     };
 
     return (
@@ -98,7 +103,12 @@ export const CollectionPage = () => {
             >
                 <DataGrid
                     rows={rows}
-                    columns={columnsConfig}
+                    columns={columnsConfig({
+                        setSuccessToastOpen,
+                        setFailureToastOpen,
+                        setSuccessToastMessage,
+                        setFailureToastMessage,
+                    })}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
                     disableSelectionOnClick
@@ -116,18 +126,6 @@ export const CollectionPage = () => {
                 Delete
 
             </Button>
-            <Toast
-                message="Movies deleted successfully"
-                severity="success"
-                open={successToastOpen}
-                setOpen={setSuccessToastOpen}
-            />
-            <Toast
-                message="Movies not deleted"
-                severity="error"
-                open={failureToastOpen}
-                setOpen={setFailureToastOpen}
-            />
         </div>
     );
 };

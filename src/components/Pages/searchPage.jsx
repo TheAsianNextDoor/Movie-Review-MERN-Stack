@@ -62,6 +62,15 @@ export const SearchPage = ({ setCurrentTab }) => {
         }
     };
 
+    const renderCards = () => !errors?.movieTitle
+        && movies?.map((movieInfo, index) => (
+            <MovieCard
+                key={index}
+                data={movieInfo}
+                handleCardClick={handleCardClick}
+            />
+        ));
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <StyledSearchDiv>
@@ -84,16 +93,7 @@ export const SearchPage = ({ setCurrentTab }) => {
             </StyledSearchDiv>
 
             <StyledCardDiv>
-                {
-                    !errors?.movieTitle
-                    && movies?.map((movieInfo, index) => (
-                        <MovieCard
-                            key={index}
-                            data={movieInfo}
-                            handleCardClick={handleCardClick}
-                        />
-                    ))
-                }
+                {renderCards()}
             </StyledCardDiv>
 
         </form>

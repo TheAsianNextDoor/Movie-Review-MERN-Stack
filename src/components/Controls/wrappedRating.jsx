@@ -6,6 +6,11 @@ import { putRequestAndVerifyOk } from '../../utils/apiRequestUtils.js';
 export const WrappedRating = ({
     value: initialValue,
     id,
+    setSuccessToastOpen,
+    setFailureToastOpen,
+    setSuccessToastMessage,
+    setFailureToastMessage,
+
 }) => {
     const [
         ratingValue,
@@ -13,14 +18,21 @@ export const WrappedRating = ({
     ] = useState();
 
     const handleOnChange = async (event, newValue) => {
-        setRatingValue(newValue);
-        await putRequestAndVerifyOk(
-            '/movie/updateRating',
-            {
-                title: id,
-                rating: newValue,
-            },
-        );
+        try {
+            setRatingValue(newValue);
+            await putRequestAndVerifyOk(
+                '/movie/updateRating',
+                {
+                    title: id,
+                    rating: newValue,
+                },
+            );
+            setSuccessToastOpen(true);
+            setSuccessToastMessage('Rating added successfully');
+        } catch (e) {
+            setFailureToastOpen(true);
+            setFailureToastMessage('Rating failure');
+        }
     };
 
     return (

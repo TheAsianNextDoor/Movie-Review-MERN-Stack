@@ -17,7 +17,7 @@ export const Toast = ({
                     horizontal: 'right',
                 }}
                 open={open}
-                autoHideDuration={4000}
+                autoHideDuration={2000}
                 onClose={handleClose}
             >
                 <Alert

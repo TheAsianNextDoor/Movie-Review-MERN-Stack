@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 
 import { NavTabs } from './components/Controls/navTabs.jsx';
+import { ToastProvider } from './components/Controls/toastProvider.jsx';
 import { CollectionPage } from './components/Pages/collectionPage.jsx';
 import { SearchPage } from './components/Pages/searchPage.jsx';
 
@@ -39,7 +40,9 @@ export const App = () => {
                     path="/collection"
                     exact
                 >
-                    <CollectionPage />
+                    <ToastProvider>
+                        <CollectionPage />
+                    </ToastProvider>
                 </Route>
             </Switch>
         </>

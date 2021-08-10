@@ -1,6 +1,11 @@
 import { WrappedRating } from '../components/Controls/wrappedRating.jsx';
 
-export const columnsConfig = [
+export const columnsConfig = ({
+    setSuccessToastOpen,
+    setFailureToastOpen,
+    setSuccessToastMessage,
+    setFailureToastMessage,
+}) => ([
     {
         field: 'id',
         headerName: 'Movie Title',
@@ -26,9 +31,17 @@ export const columnsConfig = [
         sortable: false,
         type: 'number',
         width: 150,
-        renderCell: (params) => (<WrappedRating {...params} />),
+        renderCell: (params) => (
+            <WrappedRating
+                {...params}
+                setSuccessToastOpen={setSuccessToastOpen}
+                setFailureToastOpen={setFailureToastOpen}
+                setSuccessToastMessage={setSuccessToastMessage}
+                setFailureToastMessage={setFailureToastMessage}
+            />
+        ),
     },
-];
+]);
 
 /**
  * Transforms the response from the DB into the table rows
