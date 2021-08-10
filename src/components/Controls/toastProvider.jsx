@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useState,
+} from 'react';
 
 import { Toast } from './toast.jsx';
+
+export const ToastContext = createContext();
+
+export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
     const [
@@ -20,20 +28,20 @@ export const ToastProvider = ({ children }) => {
         setFailureToastMessage,
     ] = useState('Failure');
 
-    const props = {
-        setSuccessToastOpen,
-        setFailureToastOpen,
-        setSuccessToastMessage,
-        setFailureToastMessage,
+    const updateSuccessToast = (message) => {
+        setSuccessToastOpen(true);
+        setSuccessToastMessage(message);
     };
 
-    const updateChildrenWithProps = React.Children.map(
-        children,
-        (child) => React.cloneElement(
-            child,
-            props,
-        ),
-    );
+    const updateFailureToast = (message) => {
+        setFailureToastOpen(true);
+        setFailureToastMessage(message);
+    };
+
+    const props = {
+        updateSuccessToast,
+        updateFailureToast,
+    };
 
     return (
         <>
@@ -49,7 +57,9 @@ export const ToastProvider = ({ children }) => {
                 open={failureToastOpen}
                 setOpen={setFailureToastOpen}
             />
-            {updateChildrenWithProps}
+            <ToastContext.Provider value={props}>
+                {children}
+            </ToastContext.Provider>
         </>
     );
 };

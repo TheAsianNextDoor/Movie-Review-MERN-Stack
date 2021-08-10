@@ -6,10 +6,8 @@ import { putRequestAndVerifyOk } from '../../utils/apiRequestUtils.js';
 export const WrappedRating = ({
     value: initialValue,
     id,
-    setSuccessToastOpen,
-    setFailureToastOpen,
-    setSuccessToastMessage,
-    setFailureToastMessage,
+    updateSuccessToast,
+    updateFailureToast,
 
 }) => {
     const [
@@ -27,11 +25,9 @@ export const WrappedRating = ({
                     rating: newValue,
                 },
             );
-            setSuccessToastOpen(true);
-            setSuccessToastMessage('Rating added successfully');
+            updateSuccessToast('Rating added successfully');
         } catch (e) {
-            setFailureToastOpen(true);
-            setFailureToastMessage('Rating failure');
+            updateFailureToast('Rating failure');
         }
     };
 

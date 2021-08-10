@@ -15,13 +15,9 @@ import {
     columnsConfig,
     constructRows,
 } from '../../utils/tableUtils.js';
+import { useToast } from '../Controls/toastProvider.jsx';
 
-export const CollectionPage = ({
-    setSuccessToastOpen,
-    setFailureToastOpen,
-    setSuccessToastMessage,
-    setFailureToastMessage,
-}) => {
+export const CollectionPage = () => {
     const [
         selectedItems,
         setSelectedItems,
@@ -30,6 +26,11 @@ export const CollectionPage = ({
         rows,
         setRows,
     ] = useState([]);
+
+    const {
+        updateSuccessToast,
+        updateFailureToast,
+    } = useToast();
 
     useEffect(
         () => {
@@ -58,11 +59,9 @@ export const CollectionPage = ({
             );
             const data = await getRequestAndReturnData('/movie/read/all');
             setRows(constructRows(data));
-            setSuccessToastOpen(true);
-            setSuccessToastMessage('Movie(s) deleted successfully');
+            updateSuccessToast('Movie(s) deleted successfully');
         } catch (e) {
-            setFailureToastOpen(true);
-            setFailureToastMessage('Movie(s) delete failure');
+            updateFailureToast('Movie(s) delete failure');
         }
     };
 
@@ -78,11 +77,9 @@ export const CollectionPage = ({
                     comment: value,
                 },
             );
-            setSuccessToastOpen(true);
-            setSuccessToastMessage('Comment added successfully');
+            updateSuccessToast('Comment added successfully');
         } catch (e) {
-            setFailureToastOpen(true);
-            setFailureToastMessage('Comment failure');
+            updateFailureToast('Comment failure');
         }
     };
 
@@ -104,10 +101,8 @@ export const CollectionPage = ({
                 <DataGrid
                     rows={rows}
                     columns={columnsConfig({
-                        setSuccessToastOpen,
-                        setFailureToastOpen,
-                        setSuccessToastMessage,
-                        setFailureToastMessage,
+                        updateSuccessToast,
+                        updateFailureToast,
                     })}
                     pageSize={5}
                     rowsPerPageOptions={[5]}

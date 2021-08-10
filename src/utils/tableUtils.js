@@ -1,10 +1,8 @@
 import { WrappedRating } from '../components/Controls/wrappedRating.jsx';
 
 export const columnsConfig = ({
-    setSuccessToastOpen,
-    setFailureToastOpen,
-    setSuccessToastMessage,
-    setFailureToastMessage,
+    updateSuccessToast,
+    updateFailureToast,
 }) => ([
     {
         field: 'id',
@@ -34,10 +32,8 @@ export const columnsConfig = ({
         renderCell: (params) => (
             <WrappedRating
                 {...params}
-                setSuccessToastOpen={setSuccessToastOpen}
-                setFailureToastOpen={setFailureToastOpen}
-                setSuccessToastMessage={setSuccessToastMessage}
-                setFailureToastMessage={setFailureToastMessage}
+                updateSuccessToast={updateSuccessToast}
+                updateFailureToast={updateFailureToast}
             />
         ),
     },
