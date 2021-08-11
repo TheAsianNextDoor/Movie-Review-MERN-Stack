@@ -1,8 +1,17 @@
 import { errorWrapper } from '../apiUtils.js';
 import { MovieModel } from '../models/movie.model.js';
+import {
+    validateCreateMovieParam,
+    validateDeleteMoviesBody,
+    validateUpdateCommentBody,
+    validateUpdateRatingBody,
+} from '../validations/validations.js';
 
 export const createMovie = errorWrapper(async (req, res) => {
-    const { title } = req.params;
+    const { params } = req;
+    validateCreateMovieParam(params);
+
+    const { title } = params;
     const findResult = await MovieModel.findOne({ title });
 
     if (findResult !== null) {
@@ -23,25 +32,34 @@ export const readAllMovies = errorWrapper(async (req, res) => {
 });
 
 export const updateRating = errorWrapper(async (req, res) => {
+    const { body } = req;
+    validateUpdateRatingBody(body);
+
     const {
         title,
         rating,
-    } = req.body;
+    } = body;
     const updateResult = await MovieModel.updateOne({ title }, { rating });
     return res.json(updateResult);
 });
 
 export const updateComment = errorWrapper(async (req, res) => {
+    const { body } = req;
+    validateUpdateCommentBody(body);
+
     const {
         title,
         comment,
-    } = req.body;
+    } = body;
     const updateResult = await MovieModel.updateOne({ title }, { comment });
     return res.json(updateResult);
 });
 
 export const deleteMovies = errorWrapper(async (req, res) => {
-    const { selectedItems } = req.body;
+    const { body } = req;
+    validateDeleteMoviesBody(body);
+
+    const { selectedItems } = body;
     const objectArray = selectedItems.map((title) => ({ title }));
     const deleteQuery = { $or: objectArray };
 
