@@ -100,10 +100,7 @@ export const CollectionPage = () => {
             >
                 <DataGrid
                     rows={rows}
-                    columns={columnsConfig({
-                        updateSuccessToast,
-                        updateFailureToast,
-                    })}
+                    columns={columnsConfig}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
                     disableSelectionOnClick

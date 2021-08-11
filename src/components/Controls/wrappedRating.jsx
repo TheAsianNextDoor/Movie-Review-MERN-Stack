@@ -2,18 +2,20 @@ import { Rating } from '@material-ui/lab';
 import { useState } from 'react';
 
 import { putRequestAndVerifyOk } from '../../utils/apiRequestUtils.js';
+import { useToast } from './toastProvider.jsx';
 
 export const WrappedRating = ({
     value: initialValue,
     id,
-    updateSuccessToast,
-    updateFailureToast,
-
 }) => {
     const [
         ratingValue,
         setRatingValue,
     ] = useState();
+    const {
+        updateSuccessToast,
+        updateFailureToast,
+    } = useToast();
 
     const handleOnChange = async (event, newValue) => {
         try {

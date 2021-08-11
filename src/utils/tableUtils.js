@@ -1,9 +1,6 @@
 import { WrappedRating } from '../components/Controls/wrappedRating.jsx';
 
-export const columnsConfig = ({
-    updateSuccessToast,
-    updateFailureToast,
-}) => ([
+export const columnsConfig = [
     {
         field: 'id',
         headerName: 'Movie Title',
@@ -29,15 +26,9 @@ export const columnsConfig = ({
         sortable: false,
         type: 'number',
         width: 150,
-        renderCell: (params) => (
-            <WrappedRating
-                {...params}
-                updateSuccessToast={updateSuccessToast}
-                updateFailureToast={updateFailureToast}
-            />
-        ),
+        renderCell: (params) => (<WrappedRating {...params} />),
     },
-]);
+];
 
 /**
  * Transforms the response from the DB into the table rows
