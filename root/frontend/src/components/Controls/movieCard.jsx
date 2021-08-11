@@ -9,7 +9,7 @@ import { StyledCard } from './movieCard.styles.js';
 
 export const MovieCard = ({
     data,
-    handleCardClick
+    handleCardClick,
 }) => {
     const {
         display_title,
