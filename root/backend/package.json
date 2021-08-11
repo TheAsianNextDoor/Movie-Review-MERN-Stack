@@ -1,0 +1,33 @@
+{
+    "name": "@coSchedule/backend",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "license": "MIT",
+    "dependencies": {
+        "ajv": "^6.12.6",
+        "cors": "^2.8.5",
+        "dotenv-flow": "^3.2.0",
+        "express": "^4.17.1",
+        "mongodb": "^4.0.1",
+        "mongoose": "^5.13.5"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.12"
+    },
+    "scripts": {
+        "server": "nodemon ./src/server.js"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
