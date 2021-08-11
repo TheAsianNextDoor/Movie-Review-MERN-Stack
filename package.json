@@ -22,7 +22,7 @@
         "nodemon": "^2.0.12"
     },
     "scripts": {
-        "ci-all": "concurrently \"cd ./root/backend && npm ci\" \"cd ./root/frontend && npm ci\"",
+        "ci-all": "concurrently \"npm ci\" \"cd ./root/backend && npm ci\" \"cd ./root/frontend && npm ci\"",
         "dev": "concurrently -k \"cd ./root/backend && npm run server\" \"cd ./root/frontend && npm start\""
     },
     "browserslist": {
