@@ -43,4 +43,5 @@ app.use([
 app.use('/apiKey', apiKeyRouter);
 app.use('/movie', movieRouter);
 
+// eslint-disable-next-line no-console
 app.listen(port, () => console.log(`Connected on port ${port}`));

@@ -5,6 +5,7 @@ A movie rating and commenting client that utilizes the NY Times public apis. All
 ## Getting Started
 * An .env.local file is needed for the MongoDB Atlas configuration. Contact Aaron Scherling for the file. 
 * Clone Repo via url: https://github.com/TheAsianNextDoor/CoSchedule.git
+* Run command: `npm run ci-all`
 * Run command: `npm run dev`
 
 ## Technologies
