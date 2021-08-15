@@ -7,6 +7,7 @@
     "proxy": "http://localhost:5000",
     "dependencies": {
         "concurrently": "^6.2.1",
+        "jest": "^27.0.6",
         "npm-check-updates": "^11.8.3"
     },
     "devDependencies": {
@@ -18,8 +19,7 @@
         "eslint-plugin-modules-newline": "^0.0.6",
         "eslint-plugin-react": "^7.24.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-plugin-simple-import-sort": "^7.0.0",
-        "nodemon": "^2.0.12"
+        "eslint-plugin-simple-import-sort": "^7.0.0"
     },
     "scripts": {
         "ci-all": "(npm ci) && concurrently \"cd ./root/backend && npm ci\" \"cd ./root/frontend && npm ci\"",
