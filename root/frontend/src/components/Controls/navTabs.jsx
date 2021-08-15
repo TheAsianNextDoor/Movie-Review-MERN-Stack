@@ -4,6 +4,7 @@ import {
     Tab,
     Tabs,
 } from '@material-ui/core';
+import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({ root: { flexGrow: 1 } });
@@ -15,20 +16,23 @@ export const NavTabs = ({
     const classes = useStyles();
     const history = useHistory();
 
-    const handleChange = (event, newValue) => {
-        setCurrentTab(newValue);
-        switch (newValue) {
-            case 0:
-                history.push('/');
-                break;
-            case 1:
-                history.push('/collection');
-                break;
-            default:
-                history.push('/');
-                break;
-        }
-    };
+    const handleChange = useCallback(
+        (event, newValue) => {
+            setCurrentTab(newValue);
+            switch (newValue) {
+                case 0:
+                    history.push('/');
+                    break;
+                case 1:
+                    history.push('/collection');
+                    break;
+                default:
+                    history.push('/');
+                    break;
+            }
+        },
+        [],
+    );
 
     return (
         <Paper className={classes.root}>

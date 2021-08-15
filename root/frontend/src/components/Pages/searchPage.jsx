@@ -1,6 +1,8 @@
 import { TextField } from '@material-ui/core';
 import {
+    useCallback,
     useEffect,
+    useMemo,
     useState,
 } from 'react';
 import { useForm } from 'react-hook-form';
@@ -44,32 +46,44 @@ export const SearchPage = ({ setCurrentTab }) => {
         [],
     );
 
-    const handleCardClick = async (event, displayTitle) => {
-        await postRequestAndVerifyOk(`/movie/create/${displayTitle}`);
-        setCurrentTab(1);
-        history.push('/collection');
-    };
+    const handleCardClick = useCallback(
+        async (event, displayTitle) => {
+            await postRequestAndVerifyOk(`/movie/create/${displayTitle}`);
+            setCurrentTab(1);
+            history.push('/collection');
+        },
+        [],
+    );
 
-    const onSubmit = async ({ movieTitle }) => {
-        const { results } = await getRequestAndReturnData(searchByMovieNameUri(movieTitle, apiKey));
-        if (results === null) {
-            setError(
-                'movieTitle',
-                { message: 'No movie found with provided name' },
-            );
-        } else {
-            setMovies(results.slice(0, 15));
-        }
-    };
+    const onSubmit = useCallback(
+        async ({ movieTitle }) => {
+            const { results } = await getRequestAndReturnData(searchByMovieNameUri(movieTitle, apiKey));
+            if (results === null) {
+                setError(
+                    'movieTitle',
+                    { message: 'No movie found with provided name' },
+                );
+                setMovies([]);
+            } else {
+                setMovies(results.slice(0, 15));
+            }
+        },
+        [apiKey],
+    );
 
-    const renderCards = () => !errors?.movieTitle
-        && movies?.map((movieInfo, index) => (
+    const renderedCards = useMemo(
+        () => movies?.map((movieInfo, index) => (
             <MovieCard
                 key={index}
                 data={movieInfo}
                 handleCardClick={handleCardClick}
             />
-        ));
+        )),
+        [
+            movies,
+            handleCardClick,
+        ],
+    );
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -93,7 +107,7 @@ export const SearchPage = ({ setCurrentTab }) => {
             </StyledSearchDiv>
 
             <StyledCardDiv>
-                {renderCards()}
+                {renderedCards}
             </StyledCardDiv>
 
         </form>

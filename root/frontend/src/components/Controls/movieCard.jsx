@@ -4,6 +4,7 @@ import {
     CardHeader,
     Typography,
 } from '@material-ui/core';
+import { useCallback } from 'react';
 
 import { StyledCard } from './movieCard.styles.js';
 
@@ -16,19 +17,16 @@ export const MovieCard = ({
         opening_date,
         summary_short,
     } = data;
-
-    if (!display_title) {
-        return (
-            <>
-            </>
-        );
-    }
+    const handleOnClick = useCallback(
+        (event) => handleCardClick(event, display_title),
+        [],
+    );
 
     return (
         <>
             <StyledCard
                 variant="outlined"
-                onClick={(event) => handleCardClick(event, display_title)}
+                onClick={handleOnClick}
             >
                 <CardHeader
                     title={data && display_title}

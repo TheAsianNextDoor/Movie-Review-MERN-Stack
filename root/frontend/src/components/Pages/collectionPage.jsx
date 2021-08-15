@@ -2,6 +2,7 @@ import { Button } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import DeleteIcon from '@material-ui/icons/Delete.js';
 import {
+    useCallback,
     useEffect,
     useState,
 } from 'react';
@@ -17,7 +18,10 @@ import {
 } from '../../utils/tableUtils.js';
 import { useToast } from '../Controls/toastProvider.jsx';
 
+let counter = 0;
+
 export const CollectionPage = () => {
+    console.log(counter++);
     const [
         selectedItems,
         setSelectedItems,
@@ -43,45 +47,61 @@ export const CollectionPage = () => {
         [],
     );
 
-    const handleSelectionModelChange = (items) => setSelectedItems(items);
+    const handleSelectionModelChange = useCallback(
+        (items) => setSelectedItems(items),
+        [],
+    );
 
-    const handleDelete = async () => {
-        // only commented to show error toast
-        // would uncomment to prevent error case
-        // if (selectedItems.length === 0) {
-        //     return;
-        // }
+    const handleDelete = useCallback(
+        async () => {
+            // only commented to show error toast
+            // would uncomment to prevent error case
+            // if (selectedItems.length === 0) {
+            //     return;
+            // }
 
-        try {
-            await deleteRequestAndVerifyOk(
-                '/movie/delete',
-                { data: { selectedItems } },
-            );
-            const data = await getRequestAndReturnData('/movie/read/all');
-            setRows(constructRows(data));
-            updateSuccessToast('Movie(s) deleted successfully');
-        } catch (e) {
-            updateFailureToast('Movie(s) delete failure');
-        }
-    };
+            try {
+                await deleteRequestAndVerifyOk(
+                    '/movie/delete',
+                    { data: { selectedItems } },
+                );
+                const data = await getRequestAndReturnData('/movie/read/all');
+                setRows(constructRows(data));
+                updateSuccessToast('Movie(s) deleted successfully');
+            } catch (e) {
+                updateFailureToast('Movie(s) delete failure');
+            }
+        },
+        [
+            selectedItems,
+            updateSuccessToast,
+            updateFailureToast,
+        ],
+    );
 
-    const handleCellCommit = async ({
-        id,
-        value,
-    }) => {
-        try {
-            await putRequestAndVerifyOk(
-                '/movie/updateComment',
-                {
-                    title: id,
-                    comment: value,
-                },
-            );
-            updateSuccessToast('Comment added successfully');
-        } catch (e) {
-            updateFailureToast('Comment failure');
-        }
-    };
+    const handleCellCommit = useCallback(
+        async ({
+            id,
+            value,
+        }) => {
+            try {
+                await putRequestAndVerifyOk(
+                    '/movie/updateComment',
+                    {
+                        title: id,
+                        comment: value,
+                    },
+                );
+                updateSuccessToast('Comment added successfully');
+            } catch (e) {
+                updateFailureToast('Comment failure');
+            }
+        },
+        [
+            updateSuccessToast,
+            updateFailureToast,
+        ],
+    );
 
     return (
         <div

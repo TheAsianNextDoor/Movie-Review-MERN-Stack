@@ -1,5 +1,8 @@
 import { Rating } from '@material-ui/lab';
-import { useState } from 'react';
+import {
+    useCallback,
+    useState,
+} from 'react';
 
 import { putRequestAndVerifyOk } from '../../utils/apiRequestUtils.js';
 import { useToast } from './toastProvider.jsx';
@@ -17,21 +20,29 @@ export const WrappedRating = ({
         updateFailureToast,
     } = useToast();
 
-    const handleOnChange = async (event, newValue) => {
-        try {
-            setRatingValue(newValue);
-            await putRequestAndVerifyOk(
-                '/movie/updateRating',
-                {
-                    title: id,
-                    rating: newValue,
-                },
-            );
-            updateSuccessToast('Rating added successfully');
-        } catch (e) {
-            updateFailureToast('Rating failure');
-        }
-    };
+    const handleOnChange = useCallback(
+        async (event, newValue) => {
+            try {
+                setRatingValue(newValue);
+                await putRequestAndVerifyOk(
+                    '/movie/updateRating',
+                    {
+                        title: id,
+                        rating: newValue,
+                    },
+                );
+                updateSuccessToast('Rating added successfully');
+            } catch (e) {
+                updateFailureToast('Rating failure');
+            }
+        },
+        [
+            id,
+            setRatingValue,
+            updateSuccessToast,
+            updateFailureToast,
+        ],
+    );
 
     return (
         <Rating

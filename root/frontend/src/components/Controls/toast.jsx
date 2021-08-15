@@ -1,5 +1,6 @@
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { useCallback } from 'react';
 
 export const Toast = ({
     message,
@@ -7,7 +8,10 @@ export const Toast = ({
     open,
     setOpen,
 }) => {
-    const handleClose = () => setOpen(false);
+    const handleClose = useCallback(
+        () => setOpen(false),
+        [setOpen],
+    );
 
     return (
         <>

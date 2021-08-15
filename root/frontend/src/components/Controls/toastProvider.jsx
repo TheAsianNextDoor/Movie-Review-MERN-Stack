@@ -1,5 +1,6 @@
 import React, {
     createContext,
+    useCallback,
     useContext,
     useState,
 } from 'react';
@@ -28,15 +29,27 @@ export const ToastProvider = ({ children }) => {
         setFailureToastMessage,
     ] = useState('Failure');
 
-    const updateSuccessToast = (message) => {
-        setSuccessToastOpen(true);
-        setSuccessToastMessage(message);
-    };
+    const updateSuccessToast = useCallback(
+        (message) => {
+            setSuccessToastOpen(true);
+            setSuccessToastMessage(message);
+        },
+        [
+            setSuccessToastOpen,
+            setSuccessToastMessage,
+        ],
+    );
 
-    const updateFailureToast = (message) => {
-        setFailureToastOpen(true);
-        setFailureToastMessage(message);
-    };
+    const updateFailureToast = useCallback(
+        (message) => {
+            setFailureToastOpen(true);
+            setFailureToastMessage(message);
+        },
+        [
+            setFailureToastOpen,
+            setFailureToastMessage,
+        ],
+    );
 
     const props = {
         updateSuccessToast,
