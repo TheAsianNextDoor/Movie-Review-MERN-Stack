@@ -8,7 +8,8 @@
     "dependencies": {
         "concurrently": "^6.2.1",
         "jest": "^27.0.6",
-        "npm-check-updates": "^11.8.3"
+        "npm-check-updates": "^11.8.3",
+        "sinon": "^11.1.2"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
