@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const verifyStatusIsOk = (
+export const verifyStatusIsOk = (
     status,
     statusText = 'Status not 200',
 ) => {
