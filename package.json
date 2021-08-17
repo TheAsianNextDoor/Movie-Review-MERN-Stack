@@ -7,9 +7,7 @@
     "proxy": "http://localhost:5000",
     "dependencies": {
         "concurrently": "^6.2.1",
-        "jest": "^27.0.6",
-        "npm-check-updates": "^11.8.3",
-        "sinon": "^11.1.2"
+        "npm-check-updates": "^11.8.3"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
@@ -23,7 +21,9 @@
         "eslint-plugin-simple-import-sort": "^7.0.0"
     },
     "scripts": {
-        "ci-all": "(npm ci) && concurrently \"cd ./root/backend && npm ci\" \"cd ./root/frontend && npm ci\"",
+        "ci-all": "npm ci && concurrently \"cd ./root/backend && npm ci\" \"cd ./root/frontend && npm ci\"",
+        "install-all": "npm install && concurrently \"cd ./root/frontend && npm install\" npm\"cd ./root/backend && npm install\"",
+        "clean-all": "concurrently \"del .\\package-lock.json && rd /s /q .\\node_modules\" \"cd ./root/frontend && del .\\package-lock.json && rd /s /q .\\node_modules\" \"cd ./root/backend && del .\\package-lock.json && rd /s /q .\\node_modules\"",
         "dev": "concurrently -k \"cd ./root/backend && npm run server\" \"cd ./root/frontend && npm start\""
     },
     "browserslist": {
