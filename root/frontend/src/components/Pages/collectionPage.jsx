@@ -18,10 +18,7 @@ import {
 } from '../../utils/tableUtils.js';
 import { useToast } from '../Controls/toastProvider.jsx';
 
-let counter = 0;
-
 export const CollectionPage = () => {
-    console.log(counter++);
     const [
         selectedItems,
         setSelectedItems,
