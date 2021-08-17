@@ -111,6 +111,9 @@ module.exports = {
             { maximum: 1 },
         ],
 
+        // jest rules
+        'jest/valid-expect': 'off',
+
         // misc rules
         'no-plusplus': 'off',
         'no-debugger': 'warn',
