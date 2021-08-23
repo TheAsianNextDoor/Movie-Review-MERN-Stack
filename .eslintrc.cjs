@@ -113,6 +113,7 @@ module.exports = {
 
         // jest rules
         'jest/valid-expect': 'off',
+        'jest/expect-expect': 'off',
 
         // misc rules
         'no-plusplus': 'off',
@@ -137,4 +138,8 @@ module.exports = {
             'always',
         ],
     },
+    overrides: [{
+        files: ['*.test.js'],
+        rules: { 'no-unused-expressions': 'off' },
+    }],
 };

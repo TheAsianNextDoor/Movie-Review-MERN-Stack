@@ -1,49 +1,84 @@
 import axios from 'axios';
+import { StatusCodes } from 'http-status-codes';
 
+/**
+ * Verifies that a status code was 200
+ * @param  {} status
+ * @param  {} [statusText]
+ * @throws
+ */
 export const verifyStatusIsOk = (
     status,
     statusText = 'Status not 200',
 ) => {
-    if (status !== 200) {
+    if (status !== StatusCodes.OK) {
         throw new Error(statusText);
     }
 };
 
-export const getRequestAndReturnData = async (...rest) => {
+/**
+ * Abstraction method for handling requests and verifying response status
+ * @param {function} requestMethod The http request method
+ * @param {any[]} requestArgs The arguments to be passed to the request method
+ * @param {function} [verifyMethod] The method used to verify the response status
+ * @returns {Promise<any[]>}
+ */
+exports.handleRequestVerifyAndReturn = async (
+    requestMethod,
+    requestArgs,
+    verifyMethod = () => {},
+) => {
     const {
         status,
         statusText,
         data,
-    } = await axios.get(...rest);
+    } = await requestMethod(...requestArgs);
 
-    verifyStatusIsOk(status, statusText);
+    verifyMethod(status, statusText);
 
     return data;
 };
 
-export const postRequestAndVerifyOk = async (...rest) => {
-    const {
-        status,
-        statusText,
-    } = await axios.post(...rest);
+/**
+ * Handles axios get request and verifies status is ok
+ * @param  {*} ...requestArgs The args to pass to the http request
+ * @returns {Promise<any[]>}
+ */
+export const getRequestAndReturnData = async (...requestArgs) => exports.handleRequestVerifyAndReturn(
+    axios.get,
+    requestArgs,
+    verifyStatusIsOk,
+);
 
-    verifyStatusIsOk(status, statusText);
-};
+/**
+ * Handles axios post request and verifies status is ok
+ * @param  {*} ...requestArgs The args to pass to the http request
+ * @returns {Promise<any[]>}
+ */
+export const postRequestAndVerifyOk = async (...requestArgs) => exports.handleRequestVerifyAndReturn(
+    axios.post,
+    requestArgs,
+    verifyStatusIsOk,
+);
 
-export const putRequestAndVerifyOk = async (...rest) => {
-    const {
-        status,
-        statusText,
-    } = await axios.put(...rest);
+/**
+ * Handles axios put request and verifies status is ok
+ * @param  {*} ...requestArgs The args to pass to the http request
+ * @returns {Promise<any[]>}
+ */
+export const putRequestAndVerifyOk = async (...requestArgs) => exports.handleRequestVerifyAndReturn(
+    axios.put,
+    requestArgs,
+    verifyStatusIsOk,
+);
 
-    verifyStatusIsOk(status, statusText);
-};
-
-export const deleteRequestAndVerifyOk = async (...rest) => {
-    const {
-        status,
-        statusText,
-    } = await axios.delete(...rest);
-
-    verifyStatusIsOk(status, statusText);
-};
+/**
+ * Handles axios delete request and verifies status is ok
+ * @param  {*} ...requestArgs The args to pass to the http request
+ * @returns {Promise<any[]>}
+ */
+export const deleteRequestAndVerifyOk = async (...requestArgs) => exports.handleRequestVerifyAndReturn(
+    axios.delete,
+    requestArgs,
+    verifyStatusIsOk,
+);
